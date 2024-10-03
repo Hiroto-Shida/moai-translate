@@ -1,9 +1,13 @@
-export default function Home() {
+import Home from "@/components/Home";
+import Title from "@/components/Title";
+
+const Top = () => {
   return (
-    <form>
-      <label htmlFor="name">Name: </label>
-      <input type="text" id="name" name="name" placeholder="Input your Name" />
-      <input type="submit" />
-    </form>
+    <>
+      <Title />
+      <Home />
+    </>
   );
-}
+};
+
+export default Top;
