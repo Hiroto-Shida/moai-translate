@@ -1,13 +1,24 @@
 import Home from "@/components/Home";
 import Title from "@/components/Title";
+import { InferGetServerSidePropsType, NextPage } from "next";
 
-const Top = () => {
+const Page: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ apiToken }) => {
   return (
     <>
       <Title />
-      <Home />
+      <Home apiToken={apiToken} />
     </>
   );
 };
 
-export default Top;
+export const getServerSideProps = async () => {
+  return {
+    props: {
+      apiToken: process.env.GOO_LAB_API_KEY || "",
+    },
+  };
+};
+
+export default Page;

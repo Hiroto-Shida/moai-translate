@@ -15,6 +15,7 @@ type Props = {
   translateToMoai: SubmitHandler<FormType>;
   translateToJp: SubmitHandler<FormType>;
   translateInvalidToJp: SubmitErrorHandler<FormType>;
+  hiragana: string;
   moaiLangText: string;
   notMoaiLangIndices: number[];
   handleChangeMoaiLang: (value: string) => void;
@@ -24,6 +25,7 @@ const Presenter: React.FC<Props> = ({
   translateToMoai,
   translateToJp,
   translateInvalidToJp,
+  hiragana,
   moaiLangText,
   notMoaiLangIndices,
   handleChangeMoaiLang,
@@ -91,7 +93,8 @@ const Presenter: React.FC<Props> = ({
           {...register("textJp")}
           placeholder="こんにちは"
         />
-        <span className={styles.error}>{formState.errors.textJp?.message}</span>
+        <p className={styles.hiragana}>{hiragana}</p>
+        {/* <span className={styles.error}>{formState.errors.textJp?.message}</span> */}
       </form>
       <div className={styles.buttonWrapper}>
         <button type="submit" form="translateToMoai" className={styles.button}>
