@@ -62,6 +62,8 @@ const Home = () => {
     const regexp = new RegExp(pattern, "g");
     const textJp = data.textMoai.replace(regexp, (char) => {
       const matchedEntries = Object.entries(MOAI_GO).find(
+        // matchedEntries[0]でkeyを使用しているため、buildエラー対策
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([key, value]) => value === char
       );
       return matchedEntries ? matchedEntries[0] : char;
