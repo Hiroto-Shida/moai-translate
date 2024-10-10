@@ -8,14 +8,6 @@
   gap: 10px;
 }
 
-form {
-  > .textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px 5px;
-  }
-}
-
 .buttonWrapper {
   width: 100%;
   margin: 10px auto;
@@ -25,5 +17,56 @@ form {
 
   > .button {
     padding: auto;
+  }
+}
+
+.formElement {
+  > .textarea {
+    font-size: 16px;
+    line-height: 1;
+    width: 100%;
+    height: 100px;
+    padding: 10px 5px;
+    border: 1px solid #000000;
+  }
+}
+
+.moaiTextWrapper {
+  position: relative;
+
+  > .textarea {
+    position: absolute;
+    top: 0;
+    caret-color: #000000;
+    background-color: transparent;
+    color: transparent;
+  }
+
+  > .textarea::selection {
+    background-color: rgba($color: #b2b2b2, $alpha: 0.5);
+  }
+}
+
+.displayArea {
+  font-size: 16px;
+  line-height: 1;
+  width: 100%;
+  height: 100px;
+
+  padding: 10px 5px;
+  overflow-y: scroll;
+  white-space: pre-wrap;
+
+  > .error {
+    color: red;
+    background-color: #ffa1a1;
+  }
+}
+
+.validationError {
+  color: red;
+
+  > .error {
+    background-color: #ffa1a1;
   }
 }
