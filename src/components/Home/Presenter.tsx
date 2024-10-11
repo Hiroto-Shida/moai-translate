@@ -30,8 +30,7 @@ const Presenter: React.FC<Props> = ({
   notMoaiLangIndices,
   handleChangeMoaiLang,
 }) => {
-  const { register, handleSubmit, formState, setValue } =
-    useFormContext<FormType>();
+  const { register, handleSubmit, formState } = useFormContext<FormType>();
 
   const textMoaiRef = useRef<HTMLTextAreaElement | null>(null);
   const displayAreaRef = useRef<HTMLDivElement | null>(null);
@@ -94,9 +93,9 @@ const Presenter: React.FC<Props> = ({
           placeholder="こんにちは"
         />
         <p className={styles.hiragana}>{hiragana}</p>
-        {/* <span className={styles.error}>{formState.errors.textJp?.message}</span> */}
       </form>
       <div className={styles.buttonWrapper}>
+        {/* TODO 二重送信禁止 */}
         <button type="submit" form="translateToMoai" className={styles.button}>
           <ArrowDownwardIcon />
           モアイ語に変換
@@ -120,7 +119,6 @@ const Presenter: React.FC<Props> = ({
           {...register("textMoai")}
           ref={textMoaiRef}
           onInput={(e) => {
-            setValue("textMoai", e.currentTarget.value);
             handleChangeMoaiLang(e.currentTarget.value);
           }}
           placeholder="モーアモーｨモァィモァイモアー"
