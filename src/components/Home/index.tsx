@@ -1,14 +1,8 @@
-import {
-  FormProvider,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { MOAI_GO } from "../../tools/moaiLanguage";
 import Presenter from "./Presenter";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as schemas from "../../validations/schemas";
 import { useState } from "react";
 import { convertToHiragana } from "@/servers/convertToHiragana";
 
@@ -19,12 +13,11 @@ export type FormType = {
 
 const schema = yup.object({
   textJp: yup.string(),
-  textMoai: schemas.moaiLang,
+  textMoai: yup.string(),
 });
 
 const Home: React.FC = () => {
   const methods = useForm<FormType>({
-    mode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
       textJp: "",
@@ -32,7 +25,7 @@ const Home: React.FC = () => {
     },
   });
 
-  const { setValue, getValues } = methods;
+  const { setValue } = methods;
 
   const [hiragana, setHiragana] = useState<string>("");
 
@@ -54,15 +47,9 @@ const Home: React.FC = () => {
     handleChangeMoaiLang(textMoai);
   };
 
-  // バリデーションエラーがある時の処理
-  // TODO: 標準のバリデーションエラー表示設定をやめる(理由:関数が分かれるのが嫌、モアイ語エラー時にJp→モアイ語のSubmitもできない。)
-  const translateInvalidToJp: SubmitErrorHandler<FormType> = () => {
-    const value = getValues("textMoai");
-    translateToJp({ textMoai: value });
-  };
-
   // モアイ語を日本語に変換する
   const translateToJp: SubmitHandler<FormType> = (data) => {
+    setHiragana("");
     if (!data.textMoai) return;
 
     const pattern = Object.values(MOAI_GO).reverse().join("|");
@@ -122,7 +109,6 @@ const Home: React.FC = () => {
       <Presenter
         translateToMoai={translateToMoai}
         translateToJp={translateToJp}
-        translateInvalidToJp={translateInvalidToJp}
         hiragana={hiragana}
         moaiLangText={moaiLangText}
         notMoaiLangIndices={notMoaiLangIndices}

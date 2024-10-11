@@ -1,8 +1,4 @@
-import {
-  SubmitErrorHandler,
-  SubmitHandler,
-  useFormContext,
-} from "react-hook-form";
+import { SubmitHandler, useFormContext } from "react-hook-form";
 import { FormType } from ".";
 import styles from "./index.module.scss";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -14,7 +10,6 @@ import React from "react";
 type Props = {
   translateToMoai: SubmitHandler<FormType>;
   translateToJp: SubmitHandler<FormType>;
-  translateInvalidToJp: SubmitErrorHandler<FormType>;
   hiragana: string;
   moaiLangText: string;
   notMoaiLangIndices: number[];
@@ -24,13 +19,12 @@ type Props = {
 const Presenter: React.FC<Props> = ({
   translateToMoai,
   translateToJp,
-  translateInvalidToJp,
   hiragana,
   moaiLangText,
   notMoaiLangIndices,
   handleChangeMoaiLang,
 }) => {
-  const { register, handleSubmit, formState } = useFormContext<FormType>();
+  const { register, handleSubmit } = useFormContext<FormType>();
 
   const textMoaiRef = useRef<HTMLTextAreaElement | null>(null);
   const displayAreaRef = useRef<HTMLDivElement | null>(null);
@@ -107,7 +101,7 @@ const Presenter: React.FC<Props> = ({
       </div>
       <form
         id="translateToJp"
-        onSubmit={handleSubmit(translateToJp, translateInvalidToJp)}
+        onSubmit={handleSubmit(translateToJp)}
         className={clsx(styles.formElement, styles.moaiTextWrapper)}
       >
         <div className={styles.displayArea} ref={displayAreaRef}>
@@ -124,15 +118,12 @@ const Presenter: React.FC<Props> = ({
           placeholder="モーアモーｨモァィモァイモアー"
         />
         <span className={styles.validationError}>
-          {formState.errors.textMoai?.message?.split("*").map((text, index) => {
-            return index % 2 === 0 ? (
-              <React.Fragment key={index}>{text}</React.Fragment>
-            ) : (
-              <span key={index} className={styles.error}>
-                {text}
-              </span>
-            );
-          })}
+          {notMoaiLangIndices.length > 0 && (
+            <>
+              <span className={styles.error}>モアイ語以外</span>
+              <span>は翻訳されず、そのまま反映されます</span>
+            </>
+          )}
         </span>
       </form>
     </div>
