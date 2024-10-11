@@ -4,20 +4,18 @@ import { InferGetServerSidePropsType, NextPage } from "next";
 
 const Page: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ apiToken }) => {
+> = ({}) => {
   return (
     <>
       <Title />
-      <Home apiToken={apiToken} />
+      <Home />
     </>
   );
 };
 
 export const getServerSideProps = async () => {
   return {
-    props: {
-      apiToken: process.env.GOO_LAB_API_KEY || "",
-    },
+    props: {},
   };
 };
 

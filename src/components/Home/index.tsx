@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as schemas from "../../validations/schemas";
 import { useState } from "react";
+import { convertToHiragana } from "@/servers/convertToHiragana";
 
 export type FormType = {
   textJp?: string;
@@ -21,11 +22,7 @@ const schema = yup.object({
   textMoai: schemas.moaiLang,
 });
 
-type Props = {
-  apiToken: string;
-};
-
-const Home: React.FC<Props> = ({ apiToken }) => {
+const Home: React.FC = () => {
   const methods = useForm<FormType>({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -37,38 +34,18 @@ const Home: React.FC<Props> = ({ apiToken }) => {
 
   const { setValue, getValues } = methods;
 
-  const fetchHiragana = async (text: string) => {
-    const response = await fetch(
-      `https://labs.goo.ne.jp/api/hiragana?app_id=${apiToken}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          app_id: apiToken,
-          sentence: text,
-          output_type: "hiragana",
-        }),
-      }
-    );
-    const data = await response.json();
-    return data.converted;
-  };
-
   const [hiragana, setHiragana] = useState<string>("");
 
   // 日本語をモアイ語に変換する
   const translateToMoai: SubmitHandler<FormType> = async (data) => {
     if (!data.textJp) return;
 
-    const hiragana = await fetchHiragana(data.textJp);
-    setHiragana(hiragana);
+    const convertedText = await convertToHiragana(data.textJp);
+    setHiragana(convertedText);
 
-    // TODO api fetchの型設定がうまくいったら、data.textJpをhiraganaにする
-    const textMoai = data.textJp
+    const textMoai = convertedText
       .split("")
-      .map((char) => MOAI_GO[char])
+      .map((char) => MOAI_GO[char] || char)
       .join("");
     const textMoaiElement = document.getElementById(
       "textMoai"
@@ -78,6 +55,7 @@ const Home: React.FC<Props> = ({ apiToken }) => {
   };
 
   // バリデーションエラーがある時の処理
+  // TODO: 標準のバリデーションエラー表示設定をやめる(理由:関数が分かれるのが嫌、モアイ語エラー時にJp→モアイ語のSubmitもできない。)
   const translateInvalidToJp: SubmitErrorHandler<FormType> = () => {
     const value = getValues("textMoai");
     translateToJp({ textMoai: value });
@@ -105,6 +83,7 @@ const Home: React.FC<Props> = ({ apiToken }) => {
   const [moaiLangText, setMoaiLangText] = useState<string>("");
 
   const handleChangeMoaiLang = (value: string) => {
+    setValue("textMoai", value);
     setMoaiLangText(value);
 
     const PATTERN = Object.values(MOAI_GO).reverse().join("|");
