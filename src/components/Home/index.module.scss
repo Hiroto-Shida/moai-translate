@@ -28,6 +28,7 @@
     height: 100px;
     padding: 10px 5px;
     border: 1px solid #000000;
+    resize: none;
   }
 
   > .hiragana {
@@ -70,7 +71,7 @@
 .validationError {
   color: red;
 
-  > .error {
+  > .emphasis {
     background-color: #ffa1a1;
   }
 }

@@ -1,8 +1,4 @@
-import {
-  SubmitErrorHandler,
-  SubmitHandler,
-  useFormContext,
-} from "react-hook-form";
+import { SubmitHandler, useFormContext } from "react-hook-form";
 import { FormType } from ".";
 import styles from "./index.module.scss";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -14,52 +10,51 @@ import React from "react";
 type Props = {
   translateToMoai: SubmitHandler<FormType>;
   translateToJp: SubmitHandler<FormType>;
-  translateInvalidToJp: SubmitErrorHandler<FormType>;
   hiragana: string;
-  moaiLangText: string;
-  notMoaiLangIndices: number[];
+  dividedMoalLang: string[];
+  isStartMoaiLang: boolean;
+  isValidationError: boolean;
   handleChangeMoaiLang: (value: string) => void;
 };
 
 const Presenter: React.FC<Props> = ({
   translateToMoai,
   translateToJp,
-  translateInvalidToJp,
   hiragana,
-  moaiLangText,
-  notMoaiLangIndices,
+  dividedMoalLang,
+  isStartMoaiLang,
+  isValidationError,
   handleChangeMoaiLang,
 }) => {
-  const { register, handleSubmit, formState } = useFormContext<FormType>();
+  const { register, handleSubmit, formState, setValue } =
+    useFormContext<FormType>();
 
   const textMoaiRef = useRef<HTMLTextAreaElement | null>(null);
   const displayAreaRef = useRef<HTMLDivElement | null>(null);
 
   // モアイ語のテキストをスタイル付きで表示する
   const styledMoaiLangText = useMemo(() => {
-    return moaiLangText.split("").map((char, index) => {
-      if (char === "\n") {
-        // MEMO: 改行した時の自動スクロール考慮
-        if (index === moaiLangText.length - 1)
-          return (
-            <React.Fragment key={index}>
-              <br />
-              <br />
-            </React.Fragment>
-          );
-        return <br key={index} />;
+    const moaiLangIndex = isStartMoaiLang ? 0 : 1;
+    return dividedMoalLang.map((text, index) => {
+      const splitText = text.split("\n");
+      const element = splitText.map((t, i) => (
+        <React.Fragment key={i}>
+          {i !== 0 && <br />}
+          {t}
+          {index === dividedMoalLang.length - 1 &&
+            i === splitText.length - 1 && <br />}
+        </React.Fragment>
+      ));
+      if (index % 2 === moaiLangIndex) {
+        return <span key={index}>{element}</span>;
       }
-      // TODO: spanを最小限にする
-      if (notMoaiLangIndices.includes(index)) {
-        return (
-          <span key={index} className={styles.error}>
-            {char}
-          </span>
-        );
-      }
-      return <span key={index}>{char}</span>;
+      return (
+        <span key={index} className={styles.error}>
+          {element}
+        </span>
+      );
     });
-  }, [moaiLangText, notMoaiLangIndices]);
+  }, [dividedMoalLang, isStartMoaiLang]);
 
   // 入力要素と表示要素のスクロールを連動させる
   useEffect(() => {
@@ -94,20 +89,34 @@ const Presenter: React.FC<Props> = ({
         />
         <p className={styles.hiragana}>{hiragana}</p>
       </form>
+      <div className={styles.validationError}>
+        <p>{formState.errors.textJp?.message}</p>
+      </div>
       <div className={styles.buttonWrapper}>
-        {/* TODO 二重送信禁止 */}
-        <button type="submit" form="translateToMoai" className={styles.button}>
+        <button
+          type="submit"
+          form="translateToMoai"
+          className={styles.button}
+          disabled={formState.isSubmitting || !!formState.errors.textJp}
+          onClick={() => setValue("textMoai", "")}
+        >
           <ArrowDownwardIcon />
           モアイ語に変換
         </button>
-        <button type="submit" form="translateToJp" className={styles.button}>
+        <button
+          type="submit"
+          form="translateToJp"
+          className={styles.button}
+          disabled={formState.isSubmitting || !!formState.errors.textMoai}
+          onClick={() => setValue("textJp", "")}
+        >
           <ArrowUpwardIcon />
           日本語に変換
         </button>
       </div>
       <form
         id="translateToJp"
-        onSubmit={handleSubmit(translateToJp, translateInvalidToJp)}
+        onSubmit={handleSubmit(translateToJp)}
         className={clsx(styles.formElement, styles.moaiTextWrapper)}
       >
         <div className={styles.displayArea} ref={displayAreaRef}>
@@ -121,19 +130,17 @@ const Presenter: React.FC<Props> = ({
           onInput={(e) => {
             handleChangeMoaiLang(e.currentTarget.value);
           }}
-          placeholder="モーアモーｨモァィモァイモアー"
+          placeholder="モォアモォォモァｧモァｱモアイ"
         />
-        <span className={styles.validationError}>
-          {formState.errors.textMoai?.message?.split("*").map((text, index) => {
-            return index % 2 === 0 ? (
-              <React.Fragment key={index}>{text}</React.Fragment>
-            ) : (
-              <span key={index} className={styles.error}>
-                {text}
-              </span>
-            );
-          })}
-        </span>
+        <div className={styles.validationError}>
+          {isValidationError && (
+            <>
+              ※<span className={styles.emphasis}>モアイ語以外</span>
+              は翻訳されず、そのまま反映されます
+            </>
+          )}
+          <p>{formState.errors.textMoai?.message}</p>
+        </div>
       </form>
     </div>
   );
