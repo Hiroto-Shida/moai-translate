@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   const [hiragana, setHiragana] = useState<string>("");
 
   // 日本語(ひらがな)をモアイ語に変換する
-  const translateToMoai: SubmitHandler<FormType> = async ({ textJp }) => {
+  const translateJpToMoai: SubmitHandler<FormType> = async ({ textJp }) => {
     if (!textJp) return;
 
     const convertedText = await convertToHiragana(textJp);
@@ -50,7 +50,7 @@ const Home: React.FC = () => {
   };
 
   // モアイ語を日本語に変換する
-  const translateToJp: SubmitHandler<FormType> = async ({ textMoai }) => {
+  const translateMoaiToJp: SubmitHandler<FormType> = async ({ textMoai }) => {
     if (!textMoai) return;
     setHiragana("");
 
@@ -112,8 +112,8 @@ const Home: React.FC = () => {
   return (
     <FormProvider {...methods}>
       <Presenter
-        translateToMoai={translateToMoai}
-        translateToJp={translateToJp}
+        translateJpToMoai={translateJpToMoai}
+        translateMoaiToJp={translateMoaiToJp}
         hiragana={hiragana}
         dividedMoalLang={dividedMoalLang}
         isStartMoaiLang={isStartMoaiLang}

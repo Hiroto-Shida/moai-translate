@@ -8,8 +8,8 @@ import clsx from "clsx";
 import React from "react";
 
 type Props = {
-  translateToMoai: SubmitHandler<FormType>;
-  translateToJp: SubmitHandler<FormType>;
+  translateJpToMoai: SubmitHandler<FormType>;
+  translateMoaiToJp: SubmitHandler<FormType>;
   hiragana: string;
   dividedMoalLang: string[];
   isStartMoaiLang: boolean;
@@ -18,8 +18,8 @@ type Props = {
 };
 
 const Presenter: React.FC<Props> = ({
-  translateToMoai,
-  translateToJp,
+  translateJpToMoai,
+  translateMoaiToJp,
   hiragana,
   dividedMoalLang,
   isStartMoaiLang,
@@ -78,7 +78,7 @@ const Presenter: React.FC<Props> = ({
     <div className={styles.bodyWrapper}>
       <form
         id="translateToMoai"
-        onSubmit={handleSubmit(translateToMoai)}
+        onSubmit={handleSubmit(translateJpToMoai)}
         className={styles.formElement}
       >
         <textarea
@@ -116,7 +116,7 @@ const Presenter: React.FC<Props> = ({
       </div>
       <form
         id="translateToJp"
-        onSubmit={handleSubmit(translateToJp)}
+        onSubmit={handleSubmit(translateMoaiToJp)}
         className={clsx(styles.formElement, styles.moaiTextWrapper)}
       >
         <div className={styles.displayArea} ref={displayAreaRef}>
