@@ -7,7 +7,7 @@ const Page: NextPage<
 > = ({}) => {
   return (
     <>
-      {/* <Title /> */}
+      <Title />
       <Home />
     </>
   );
