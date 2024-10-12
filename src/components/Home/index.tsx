@@ -12,10 +12,9 @@ export type FormType = {
   textMoai?: string;
 };
 
-// TODO: jpは1000文字制限、モアイ語は2000文字制限にする
 const schema = yup.object({
-  textJp: yup.string().max(50, "※10文字以内で入力してください"),
-  textMoai: yup.string().max(50, "※10文字以内で入力してください"),
+  textJp: yup.string().max(1000, "※1000文字以内で入力してください"),
+  textMoai: yup.string().max(2000, "※2000文字以内で入力してください"),
 });
 
 const Home: React.FC = () => {
