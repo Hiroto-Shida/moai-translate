@@ -1,4 +1,4 @@
-import { MOAI_LANG } from "@/tools/moaiLanguage";
+import { MOAI_LANG } from "./moaiLang";
 
 const PATTERN = Object.values(MOAI_LANG).reverse().join("|");
 

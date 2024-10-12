@@ -1,5 +1,5 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { MOAI_LANG } from "../../tools/moaiLanguage";
+import { MOAI_LANG } from "../../constants/moaiLang";
 import Presenter from "./Presenter";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
