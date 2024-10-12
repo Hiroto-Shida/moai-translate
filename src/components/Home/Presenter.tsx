@@ -26,7 +26,8 @@ const Presenter: React.FC<Props> = ({
   isValidationError,
   handleChangeMoaiLang,
 }) => {
-  const { register, handleSubmit } = useFormContext<FormType>();
+  const { register, handleSubmit, formState, setValue } =
+    useFormContext<FormType>();
 
   const textMoaiRef = useRef<HTMLTextAreaElement | null>(null);
   const displayAreaRef = useRef<HTMLDivElement | null>(null);
@@ -88,13 +89,27 @@ const Presenter: React.FC<Props> = ({
         />
         <p className={styles.hiragana}>{hiragana}</p>
       </form>
+      <div className={styles.validationError}>
+        <p>{formState.errors.textJp?.message}</p>
+      </div>
       <div className={styles.buttonWrapper}>
-        {/* TODO 二重送信禁止 */}
-        <button type="submit" form="translateToMoai" className={styles.button}>
+        <button
+          type="submit"
+          form="translateToMoai"
+          className={styles.button}
+          disabled={formState.isSubmitting || !!formState.errors.textJp}
+          onClick={() => setValue("textMoai", "")}
+        >
           <ArrowDownwardIcon />
           モアイ語に変換
         </button>
-        <button type="submit" form="translateToJp" className={styles.button}>
+        <button
+          type="submit"
+          form="translateToJp"
+          className={styles.button}
+          disabled={formState.isSubmitting || !!formState.errors.textMoai}
+          onClick={() => setValue("textJp", "")}
+        >
           <ArrowUpwardIcon />
           日本語に変換
         </button>
@@ -115,16 +130,17 @@ const Presenter: React.FC<Props> = ({
           onInput={(e) => {
             handleChangeMoaiLang(e.currentTarget.value);
           }}
-          placeholder="モーアモーｨモァィモァイモアー"
+          placeholder="モォアモォォモァｧモァｱモアイ"
         />
-        <span className={styles.validationError}>
+        <div className={styles.validationError}>
           {isValidationError && (
             <>
-              <span className={styles.error}>モアイ語以外</span>
-              <span>は翻訳されず、そのまま反映されます</span>
+              ※<span className={styles.emphasis}>モアイ語以外</span>
+              は翻訳されず、そのまま反映されます
             </>
           )}
-        </span>
+          <p>{formState.errors.textMoai?.message}</p>
+        </div>
       </form>
     </div>
   );

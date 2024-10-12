@@ -12,14 +12,16 @@ export type FormType = {
   textMoai?: string;
 };
 
+// TODO: jpは1000文字制限、モアイ語は2000文字制限にする
 const schema = yup.object({
-  textJp: yup.string(),
-  textMoai: yup.string(),
+  textJp: yup.string().max(50, "※10文字以内で入力してください"),
+  textMoai: yup.string().max(50, "※10文字以内で入力してください"),
 });
 
 const Home: React.FC = () => {
   const methods = useForm<FormType>({
     resolver: yupResolver(schema),
+    mode: "onChange",
     defaultValues: {
       textJp: "",
       textMoai: "",
@@ -31,10 +33,10 @@ const Home: React.FC = () => {
   const [hiragana, setHiragana] = useState<string>("");
 
   // 日本語(ひらがな)をモアイ語に変換する
-  const translateToMoai: SubmitHandler<FormType> = async (data) => {
-    if (!data.textJp) return;
+  const translateToMoai: SubmitHandler<FormType> = async ({ textJp }) => {
+    if (!textJp) return;
 
-    const convertedText = await convertToHiragana(data.textJp);
+    const convertedText = await convertToHiragana(textJp);
     setHiragana(convertedText);
 
     const textMoai = convertedText
@@ -49,13 +51,13 @@ const Home: React.FC = () => {
   };
 
   // モアイ語を日本語に変換する
-  const translateToJp: SubmitHandler<FormType> = (data) => {
+  const translateToJp: SubmitHandler<FormType> = async ({ textMoai }) => {
+    if (!textMoai) return;
     setHiragana("");
-    if (!data.textMoai) return;
 
     const pattern = Object.values(MOAI_LANG).reverse().join("|");
     const regexp = new RegExp(pattern, "g");
-    const textJp = data.textMoai.replace(regexp, (char) => {
+    const textJp = textMoai.replace(regexp, (char) => {
       const matchedEntries = Object.entries(MOAI_LANG).find(
         // matchedEntries[0]でkeyを使用しているため、buildエラー対策
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
