@@ -1,4 +1,4 @@
-export const MOAI_GO: { [key: string]: string } = {
+export const MOAI_LANG: { [key: string]: string } = {
   あ: "モア",
   い: "モァ",
   う: "モイ",

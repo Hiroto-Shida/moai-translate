@@ -1,10 +1,11 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { MOAI_GO } from "../../tools/moaiLanguage";
+import { MOAI_LANG } from "../../tools/moaiLanguage";
 import Presenter from "./Presenter";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { convertToHiragana } from "@/servers/convertToHiragana";
+import { ALL_MOAI_LANG_REGEXP, MOAI_LANG_REGEXP } from "@/constants/regexp";
 
 export type FormType = {
   textJp?: string;
@@ -29,7 +30,7 @@ const Home: React.FC = () => {
 
   const [hiragana, setHiragana] = useState<string>("");
 
-  // 日本語をモアイ語に変換する
+  // 日本語(ひらがな)をモアイ語に変換する
   const translateToMoai: SubmitHandler<FormType> = async (data) => {
     if (!data.textJp) return;
 
@@ -38,7 +39,7 @@ const Home: React.FC = () => {
 
     const textMoai = convertedText
       .split("")
-      .map((char) => MOAI_GO[char] || char)
+      .map((char) => MOAI_LANG[char] || char)
       .join("");
     const textMoaiElement = document.getElementById(
       "textMoai"
@@ -52,10 +53,10 @@ const Home: React.FC = () => {
     setHiragana("");
     if (!data.textMoai) return;
 
-    const pattern = Object.values(MOAI_GO).reverse().join("|");
+    const pattern = Object.values(MOAI_LANG).reverse().join("|");
     const regexp = new RegExp(pattern, "g");
     const textJp = data.textMoai.replace(regexp, (char) => {
-      const matchedEntries = Object.entries(MOAI_GO).find(
+      const matchedEntries = Object.entries(MOAI_LANG).find(
         // matchedEntries[0]でkeyを使用しているため、buildエラー対策
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([key, value]) => value === char
@@ -73,20 +74,15 @@ const Home: React.FC = () => {
   const handleChangeMoaiLang = (value: string) => {
     setValue("textMoai", value);
 
-    const PATTERN = Object.values(MOAI_GO).reverse().join("|");
-    const allMoaiLangRegExp = new RegExp(`^(${PATTERN}|\\s)*$`);
-    const moaiLangRegExp = new RegExp(`${PATTERN}|\\s`, "g");
-    let match;
-
-    // 入力文字をモアイ語とその他語で分割した配列
     const tmpDividedMoalLang: string[] = [];
     let tmpIsStartMoaiLang = false;
 
     // 全体でモアイ語以外があるかチェック
-    if (!allMoaiLangRegExp.test(value)) {
+    if (!ALL_MOAI_LANG_REGEXP.test(value)) {
       setIsValidationError(true);
+      let match;
       let lastIndex = 0;
-      while ((match = moaiLangRegExp.exec(value)) !== null) {
+      while ((match = MOAI_LANG_REGEXP.exec(value)) !== null) {
         if (lastIndex !== match.index) {
           tmpDividedMoalLang.push(value.slice(lastIndex, match.index));
         }
@@ -96,7 +92,7 @@ const Home: React.FC = () => {
           if (tmpDividedMoalLang.length === 0) tmpIsStartMoaiLang = true;
           tmpDividedMoalLang.push(match[0]);
         }
-        lastIndex = moaiLangRegExp.lastIndex;
+        lastIndex = MOAI_LANG_REGEXP.lastIndex;
       }
       // 末尾(後半)のマッチしない部分をチェック
       if (lastIndex < value.length) {
