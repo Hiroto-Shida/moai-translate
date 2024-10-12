@@ -66,42 +66,50 @@ const Home: React.FC = () => {
     setValue("textJp", textJp);
   };
 
-  const [notMoaiLangIndices, setNotMoaiLangIndices] = useState<number[]>([]);
-  const [moaiLangText, setMoaiLangText] = useState<string>("");
+  const [dividedMoalLang, setDividedMoalLang] = useState<string[]>([]);
+  const [isStartMoaiLang, setIsStartMoaiLang] = useState<boolean>(true);
+  const [isValidationError, setIsValidationError] = useState<boolean>(false);
 
   const handleChangeMoaiLang = (value: string) => {
     setValue("textMoai", value);
-    setMoaiLangText(value);
 
     const PATTERN = Object.values(MOAI_GO).reverse().join("|");
     const allMoaiLangRegExp = new RegExp(`^(${PATTERN}|\\s)*$`);
     const moaiLangRegExp = new RegExp(`${PATTERN}|\\s`, "g");
     let match;
 
-    // マッチしない部分のインデックスを保存する配列
-    const errorIndices: number[] = [];
+    // 入力文字をモアイ語とその他語で分割した配列
+    const tmpDividedMoalLang: string[] = [];
+    let tmpIsStartMoaiLang = false;
 
-    // 全体が正しいかどうかチェック
+    // 全体でモアイ語以外があるかチェック
     if (!allMoaiLangRegExp.test(value)) {
-      // 許可されているパターンをすべてサーチし、その範囲を除外
+      setIsValidationError(true);
       let lastIndex = 0;
       while ((match = moaiLangRegExp.exec(value)) !== null) {
-        if (match.index > lastIndex) {
-          // マッチしない部分のインデックスを記録
-          for (let i = lastIndex; i < match.index; i++) {
-            errorIndices.push(i);
-          }
+        if (lastIndex !== match.index) {
+          tmpDividedMoalLang.push(value.slice(lastIndex, match.index));
         }
-        lastIndex = match.index + match[0].length;
+        if (tmpDividedMoalLang.length > 0 && lastIndex === match.index) {
+          tmpDividedMoalLang[tmpDividedMoalLang.length - 1] += match[0];
+        } else {
+          if (tmpDividedMoalLang.length === 0) tmpIsStartMoaiLang = true;
+          tmpDividedMoalLang.push(match[0]);
+        }
+        lastIndex = moaiLangRegExp.lastIndex;
       }
       // 末尾(後半)のマッチしない部分をチェック
       if (lastIndex < value.length) {
-        for (let i = lastIndex; i < value.length; i++) {
-          errorIndices.push(i);
-        }
+        tmpDividedMoalLang.push(value.slice(lastIndex));
       }
+    } else {
+      // 全体がモアイ語onlyの場合
+      tmpDividedMoalLang.push(value);
+      tmpIsStartMoaiLang = true;
+      setIsValidationError(false);
     }
-    setNotMoaiLangIndices(errorIndices);
+    setDividedMoalLang(tmpDividedMoalLang);
+    setIsStartMoaiLang(tmpIsStartMoaiLang);
   };
 
   return (
@@ -110,8 +118,9 @@ const Home: React.FC = () => {
         translateToMoai={translateToMoai}
         translateToJp={translateToJp}
         hiragana={hiragana}
-        moaiLangText={moaiLangText}
-        notMoaiLangIndices={notMoaiLangIndices}
+        dividedMoalLang={dividedMoalLang}
+        isStartMoaiLang={isStartMoaiLang}
+        isValidationError={isValidationError}
         handleChangeMoaiLang={handleChangeMoaiLang}
       />
     </FormProvider>

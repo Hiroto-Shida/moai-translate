@@ -11,8 +11,9 @@ type Props = {
   translateToMoai: SubmitHandler<FormType>;
   translateToJp: SubmitHandler<FormType>;
   hiragana: string;
-  moaiLangText: string;
-  notMoaiLangIndices: number[];
+  dividedMoalLang: string[];
+  isStartMoaiLang: boolean;
+  isValidationError: boolean;
   handleChangeMoaiLang: (value: string) => void;
 };
 
@@ -20,8 +21,9 @@ const Presenter: React.FC<Props> = ({
   translateToMoai,
   translateToJp,
   hiragana,
-  moaiLangText,
-  notMoaiLangIndices,
+  dividedMoalLang,
+  isStartMoaiLang,
+  isValidationError,
   handleChangeMoaiLang,
 }) => {
   const { register, handleSubmit } = useFormContext<FormType>();
@@ -31,29 +33,18 @@ const Presenter: React.FC<Props> = ({
 
   // モアイ語のテキストをスタイル付きで表示する
   const styledMoaiLangText = useMemo(() => {
-    return moaiLangText.split("").map((char, index) => {
-      if (char === "\n") {
-        // MEMO: 改行した時の自動スクロール考慮
-        if (index === moaiLangText.length - 1)
-          return (
-            <React.Fragment key={index}>
-              <br />
-              <br />
-            </React.Fragment>
-          );
-        return <br key={index} />;
+    const moaiLangIndex = isStartMoaiLang ? 0 : 1;
+    return dividedMoalLang.map((text, index) => {
+      if (index % 2 === moaiLangIndex) {
+        return <span key={index}>{text}</span>;
       }
-      // TODO: spanを最小限にする
-      if (notMoaiLangIndices.includes(index)) {
-        return (
-          <span key={index} className={styles.error}>
-            {char}
-          </span>
-        );
-      }
-      return <span key={index}>{char}</span>;
+      return (
+        <span key={index} className={styles.error}>
+          {text}
+        </span>
+      );
     });
-  }, [moaiLangText, notMoaiLangIndices]);
+  }, [dividedMoalLang, isStartMoaiLang]);
 
   // 入力要素と表示要素のスクロールを連動させる
   useEffect(() => {
@@ -118,7 +109,7 @@ const Presenter: React.FC<Props> = ({
           placeholder="モーアモーｨモァィモァイモアー"
         />
         <span className={styles.validationError}>
-          {notMoaiLangIndices.length > 0 && (
+          {isValidationError && (
             <>
               <span className={styles.error}>モアイ語以外</span>
               <span>は翻訳されず、そのまま反映されます</span>
