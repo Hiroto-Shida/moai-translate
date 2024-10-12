@@ -35,12 +35,21 @@ const Presenter: React.FC<Props> = ({
   const styledMoaiLangText = useMemo(() => {
     const moaiLangIndex = isStartMoaiLang ? 0 : 1;
     return dividedMoalLang.map((text, index) => {
+      const splitText = text.split("\n");
+      const element = splitText.map((t, i) => (
+        <React.Fragment key={i}>
+          {i !== 0 && <br />}
+          {t}
+          {index === dividedMoalLang.length - 1 &&
+            i === splitText.length - 1 && <br />}
+        </React.Fragment>
+      ));
       if (index % 2 === moaiLangIndex) {
-        return <span key={index}>{text}</span>;
+        return <span key={index}>{element}</span>;
       }
       return (
         <span key={index} className={styles.error}>
-          {text}
+          {element}
         </span>
       );
     });
