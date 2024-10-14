@@ -1,0 +1,23 @@
+@use "@/styles/variables.module.scss" as *;
+
+.none {
+  border: 1px solid $color-black;
+  height: 54px;
+  width: 70px;
+  box-sizing: content-box;
+}
+
+.tableElement {
+  border: 1px solid $color-black;
+  height: 54px;
+  width: 70px;
+  font-size: $font-size-base;
+  text-align: center;
+  box-sizing: content-box;
+}
+
+.trElement {
+  > th {
+    border-bottom: 1px solid $color-black;
+  }
+}

@@ -17,7 +17,7 @@ const schema = yup.object({
   textMoai: yup.string().max(2000, "※2000文字以内で入力してください"),
 });
 
-const Home: React.FC = () => {
+const Translation: React.FC = () => {
   const methods = useForm<FormType>({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -27,12 +27,12 @@ const Home: React.FC = () => {
     },
   });
 
-  const { setValue } = methods;
+  const { setValue, trigger } = methods;
 
   const [hiragana, setHiragana] = useState<string>("");
 
   // 日本語(ひらがな)をモアイ語に変換する
-  const translateToMoai: SubmitHandler<FormType> = async ({ textJp }) => {
+  const translateJpToMoai: SubmitHandler<FormType> = async ({ textJp }) => {
     if (!textJp) return;
 
     const convertedText = await convertToHiragana(textJp);
@@ -47,10 +47,11 @@ const Home: React.FC = () => {
     ) as HTMLTextAreaElement;
     if (textMoaiElement) textMoaiElement.value = textMoai;
     handleChangeMoaiLang(textMoai);
+    trigger("textMoai");
   };
 
   // モアイ語を日本語に変換する
-  const translateToJp: SubmitHandler<FormType> = async ({ textMoai }) => {
+  const translateMoaiToJp: SubmitHandler<FormType> = async ({ textMoai }) => {
     if (!textMoai) return;
     setHiragana("");
 
@@ -66,6 +67,7 @@ const Home: React.FC = () => {
     });
 
     setValue("textJp", textJp);
+    trigger("textJp");
   };
 
   const [dividedMoalLang, setDividedMoalLang] = useState<string[]>([]);
@@ -112,8 +114,8 @@ const Home: React.FC = () => {
   return (
     <FormProvider {...methods}>
       <Presenter
-        translateToMoai={translateToMoai}
-        translateToJp={translateToJp}
+        translateJpToMoai={translateJpToMoai}
+        translateMoaiToJp={translateMoaiToJp}
         hiragana={hiragana}
         dividedMoalLang={dividedMoalLang}
         isStartMoaiLang={isStartMoaiLang}
@@ -124,4 +126,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Translation;

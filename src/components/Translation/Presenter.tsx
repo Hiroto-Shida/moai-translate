@@ -1,15 +1,14 @@
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { FormType } from ".";
 import styles from "./index.module.scss";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import React from "react";
+import TranslateButton from "../TranslateButton";
 
 type Props = {
-  translateToMoai: SubmitHandler<FormType>;
-  translateToJp: SubmitHandler<FormType>;
+  translateJpToMoai: SubmitHandler<FormType>;
+  translateMoaiToJp: SubmitHandler<FormType>;
   hiragana: string;
   dividedMoalLang: string[];
   isStartMoaiLang: boolean;
@@ -18,19 +17,23 @@ type Props = {
 };
 
 const Presenter: React.FC<Props> = ({
-  translateToMoai,
-  translateToJp,
+  translateJpToMoai,
+  translateMoaiToJp,
   hiragana,
   dividedMoalLang,
   isStartMoaiLang,
   isValidationError,
   handleChangeMoaiLang,
 }) => {
-  const { register, handleSubmit, formState, setValue } =
+  const { register, watch, handleSubmit, formState, setValue } =
     useFormContext<FormType>();
 
   const textMoaiRef = useRef<HTMLTextAreaElement | null>(null);
   const displayAreaRef = useRef<HTMLDivElement | null>(null);
+
+  // TODO: その他の無駄な再レンダリングをなくす
+  const [jpCount, setJpCount] = useState<number>(0);
+  const [moaiCount, setMoaiCount] = useState<number>(0);
 
   // モアイ語のテキストをスタイル付きで表示する
   const styledMoaiLangText = useMemo(() => {
@@ -74,56 +77,67 @@ const Presenter: React.FC<Props> = ({
     }
   }, []);
 
+  const [watchJp, watchMoai] = watch(["textJp", "textMoai"]);
+  useEffect(() => {
+    if (watchJp !== undefined) setJpCount(watchJp.length);
+    if (watchMoai !== undefined) setMoaiCount(watchMoai.length);
+  }, [watchJp, watchMoai]);
+
   return (
     <div className={styles.bodyWrapper}>
       <form
         id="translateToMoai"
-        onSubmit={handleSubmit(translateToMoai)}
+        onSubmit={handleSubmit(translateJpToMoai)}
         className={styles.formElement}
       >
         <textarea
-          className={styles.textarea}
+          className={clsx(styles.textarea, {
+            [styles.Error]: formState.errors.textJp,
+          })}
           id="textJp"
           {...register("textJp")}
           placeholder="こんにちは"
         />
-        <p className={styles.hiragana}>{hiragana}</p>
+        <div className={styles.counter}>
+          <span
+            className={clsx({
+              [styles.error]: formState.errors.textJp,
+            })}
+          >
+            {jpCount}
+          </span>
+          /1000
+        </div>
       </form>
-      <div className={styles.validationError}>
-        <p>{formState.errors.textJp?.message}</p>
-      </div>
-      <div className={styles.buttonWrapper}>
-        <button
-          type="submit"
+      <p className={styles.hiragana}>{hiragana}</p>
+      <div className={styles.buttonsWrapper}>
+        <TranslateButton
           form="translateToMoai"
-          className={styles.button}
           disabled={formState.isSubmitting || !!formState.errors.textJp}
           onClick={() => setValue("textMoai", "")}
-        >
-          <ArrowDownwardIcon />
-          モアイ語に変換
-        </button>
-        <button
-          type="submit"
+          direction="down"
+          text="モアイ語に翻訳"
+        />
+        <TranslateButton
           form="translateToJp"
-          className={styles.button}
           disabled={formState.isSubmitting || !!formState.errors.textMoai}
           onClick={() => setValue("textJp", "")}
-        >
-          <ArrowUpwardIcon />
-          日本語に変換
-        </button>
+          direction="up"
+          text="日本語に翻訳"
+        />
       </div>
       <form
         id="translateToJp"
-        onSubmit={handleSubmit(translateToJp)}
+        onSubmit={handleSubmit(translateMoaiToJp)}
         className={clsx(styles.formElement, styles.moaiTextWrapper)}
       >
         <div className={styles.displayArea} ref={displayAreaRef}>
           {styledMoaiLangText}
         </div>
         <textarea
-          className={styles.textarea}
+          className={clsx(styles.textarea, {
+            [styles.Error]: formState.errors.textMoai,
+          })}
           id="textMoai"
           {...register("textMoai")}
           ref={textMoaiRef}
@@ -132,16 +146,25 @@ const Presenter: React.FC<Props> = ({
           }}
           placeholder="モォアモォォモァｧモァｱモアイ"
         />
-        <div className={styles.validationError}>
-          {isValidationError && (
-            <>
-              ※<span className={styles.emphasis}>モアイ語以外</span>
-              は翻訳されず、そのまま反映されます
-            </>
-          )}
-          <p>{formState.errors.textMoai?.message}</p>
+        <div className={styles.counter}>
+          <span
+            className={clsx({
+              [styles.error]: formState.errors.textMoai,
+            })}
+          >
+            {moaiCount}
+          </span>
+          /2000
         </div>
       </form>
+      <div className={styles.validationError}>
+        {isValidationError && (
+          <>
+            ※<span className={styles.emphasis}>モアイ語以外</span>
+            は翻訳されず、そのまま反映されます
+          </>
+        )}
+      </div>
     </div>
   );
 };

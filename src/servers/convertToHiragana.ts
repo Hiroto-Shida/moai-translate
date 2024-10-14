@@ -11,6 +11,7 @@ export const convertToHiragana = async (text: string): Promise<string> => {
       return response.data.converted;
     })
     .catch((error: AxiosError<ApiErrorResponseType>) => {
+      // TODO: alert or トーストを出す
       return error.response?.data.error.message || "APIエラーが発生しました";
     });
 };

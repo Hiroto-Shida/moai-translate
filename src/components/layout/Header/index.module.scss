@@ -1,0 +1,25 @@
+@use "@/styles/variables.module.scss" as *;
+
+.headerWrapper {
+  background-color: $color-white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  border-top: 2px solid $color-black;
+  border-bottom: 2px solid $color-black;
+  margin-bottom: 30px;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > .title {
+    text-align: center;
+    font-size: $font-size-header;
+  }
+
+  > .image {
+    object-fit: contain;
+    height: 60%;
+  }
+}
