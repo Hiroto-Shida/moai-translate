@@ -1,5 +1,5 @@
-import Home from "@/components/Home";
-import Title from "@/components/Title";
+import Translation from "@/components/Translation";
+import { Layout } from "@/components/layout/Layout";
 import { InferGetServerSidePropsType, NextPage } from "next";
 
 const Page: NextPage<
@@ -7,8 +7,9 @@ const Page: NextPage<
 > = ({}) => {
   return (
     <>
-      <Title />
-      <Home />
+      <Layout>
+        <Translation />
+      </Layout>
     </>
   );
 };

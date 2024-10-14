@@ -17,7 +17,7 @@ const schema = yup.object({
   textMoai: yup.string().max(2000, "※2000文字以内で入力してください"),
 });
 
-const Home: React.FC = () => {
+const Translation: React.FC = () => {
   const methods = useForm<FormType>({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -126,4 +126,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Translation;
