@@ -5,22 +5,18 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  // align-items: center;
   gap: 20px;
   width: 100%;
   max-width: 722px;
 
   > .title {
-    // background-color: aquamarine;
     font-size: $font-size-title;
     font-weight: bold;
   }
 }
 
 .tableDisplayWrapper {
-  // background-color: aqua;
   overflow-x: scroll;
-  // padding: 10px;
   display: flex;
   justify-content: center;
 
