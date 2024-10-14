@@ -1,10 +1,17 @@
+import { useContext } from "react";
 import OneTable from "../OneTable";
 import styles from "./index.module.scss";
+import { LanguagesContext } from "@/components/layout/Layout";
 
 const Presenter: React.FC = () => {
+  const language = useContext(LanguagesContext);
   return (
     <div className={styles.moaiLangTableWrapper}>
-      <p className={styles.title}>モアイ語対応表</p>
+      <p className={styles.title}>
+        {language === "ja"
+          ? "モアイ語対応表"
+          : `モォィモアモァモォア"モアｱモァモォモイモァイﾓォｲモイ`}
+      </p>
       <div className={styles.tableDisplayWrapper}>
         <div className={styles.tableWrapper}>
           <div className={styles.columnWrapper}>
@@ -80,20 +87,48 @@ const Presenter: React.FC = () => {
         </div>
       </div>
       <div className={styles.otherCharWrapper}>
-        <p className={styles.title}>その他対応文字</p>
+        <p className={styles.title}>
+          {language === "ja"
+            ? "その他対応文字"
+            : `モォァモォｧモアｱ モアｱモァモォモイモォィモァァ"`}
+        </p>
         <table className={styles.table}>
           <tbody>
             <tr>
-              <td>{`濁点：文字の後ろに「"」`}</td>
-              <td>{`例）「ざ」→「モアァ"」`}</td>
+              <td>
+                {language === "ja"
+                  ? `濁点：文字の後ろに「"」`
+                  : `モアｱ"モイアモィｱモォォ：モォィモァァ"モォｧ モイモァァモォｨモァｧ「"」`}
+              </td>
+              <td>
+                {language === "ja"
+                  ? `例）「ざ」→「モアァ"」`
+                  : `モィｨモァ）「ざ」→「モアァ"」`}
+              </td>
             </tr>
             <tr>
-              <td>半濁点：文字の後ろに「°」</td>
-              <td>例）「ぱ」→「モアイ°」</td>
+              <td>
+                {language === "ja"
+                  ? `半濁点：文字の後ろに「°」`
+                  : `モアイモォォモアｱ"モイアモィｱモォォ：モォィモァァ"モォｧ モイモァァモォｨモァｧ「°」`}
+              </td>
+              <td>
+                {language === "ja"
+                  ? `例）「ぱ」→「モアイ°」`
+                  : `モィｨモァ）「ぱ」→「モアイ°」`}
+              </td>
             </tr>
             <tr>
-              <td>小文字：先頭が半角の「ﾓ」</td>
-              <td>例）「ぁ」→「ﾓア」</td>
+              <td>
+                {language === "ja"
+                  ? `小文字：先頭が半角の「ﾓ」`
+                  : `モォアモォィモァァ"：モィァモォォモォｱモイモアア" モアイモォォモアアモイアモォｧ「ﾓ」`}
+              </td>
+              <td>
+                {language === "ja"
+                  ? `例）「ぁ」→「ﾓア」`
+                  : `モィｨモァ）「ぁ」→「ﾓア」`}
+              </td>
             </tr>
           </tbody>
         </table>

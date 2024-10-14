@@ -1,4 +1,9 @@
+import { createContext, useState } from "react";
 import Header from "../Header";
+
+type Languages = "ja" | "moai";
+
+export const LanguagesContext = createContext<Languages>("ja");
 
 type Props = {
   children: React.ReactNode;
@@ -7,9 +12,11 @@ type Props = {
 const headerHeight = 60;
 
 export const Layout = ({ children }: Props) => {
+  const [language, setLangage] = useState<Languages>("ja");
+
   return (
-    <>
-      <Header height={headerHeight} />
+    <LanguagesContext.Provider value={language}>
+      <Header height={headerHeight} onClickSwitch={setLangage} />
       <div
         style={{
           marginTop: `${headerHeight + 30}px`,
@@ -19,10 +26,11 @@ export const Layout = ({ children }: Props) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          gap: "20px",
         }}
       >
         {children}
       </div>
-    </>
+    </LanguagesContext.Provider>
   );
 };

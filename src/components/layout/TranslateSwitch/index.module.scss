@@ -1,0 +1,65 @@
+@use "@/styles/variables.module.scss" as *;
+
+.translateSwitch {
+  position: absolute;
+  right: 20px;
+  // top: 0;
+  // background-color: aqua;
+  // width: 100px;
+  height: 100%;
+}
+
+.switchLabel {
+  position: relative;
+
+  > input[type="checkbox"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  > .circle {
+    position: relative;
+    left: -4px;
+    width: 32px;
+    height: 32px;
+    top: -8px; // TODO:
+    border-radius: 50%;
+    background-color: $color-white;
+    color: $color-black;
+    border: 2px solid $color-black;
+    text-align: center;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+  }
+
+  > .circle > .text {
+    font-size: $font-size-base;
+    font-weight: bold;
+    color: inherit;
+  }
+
+  > .base {
+    position: relative;
+    width: 48px;
+    border-radius: 16px;
+    height: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 2px solid $color-black;
+    background-color: $color-white;
+  }
+
+  > input[type="checkbox"]:checked ~ .circle {
+    background-color: $color-black;
+    color: $color-white;
+    transform: translate(75%);
+  }
+
+  > input[type="checkbox"]:checked ~ .base {
+    background-color: $color-black;
+  }
+}

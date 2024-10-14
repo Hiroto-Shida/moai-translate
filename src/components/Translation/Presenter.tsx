@@ -1,10 +1,11 @@
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { FormType } from ".";
 import styles from "./index.module.scss";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import React from "react";
 import TranslateButton from "../TranslateButton";
+import { LanguagesContext } from "../layout/Layout";
 
 type Props = {
   translateJpToMoai: SubmitHandler<FormType>;
@@ -25,6 +26,8 @@ const Presenter: React.FC<Props> = ({
   isValidationError,
   handleChangeMoaiLang,
 }) => {
+  const language = useContext(LanguagesContext);
+
   const { register, watch, handleSubmit, formState, setValue } =
     useFormContext<FormType>();
 
@@ -116,14 +119,22 @@ const Presenter: React.FC<Props> = ({
           disabled={formState.isSubmitting || !!formState.errors.textJp}
           onClick={() => setValue("textMoai", "")}
           direction="down"
-          text="モアイ語に翻訳"
+          text={
+            language === "ja"
+              ? "モアイ語に翻訳"
+              : `モォィモアモァモォア"モァｧ\nモォイモォォモアｲモイア`
+          }
         />
         <TranslateButton
           form="translateToJp"
           disabled={formState.isSubmitting || !!formState.errors.textMoai}
           onClick={() => setValue("textJp", "")}
           direction="up"
-          text="日本語に翻訳"
+          text={
+            language === "ja"
+              ? "日本語に翻訳"
+              : `モァｧモォイモォォモォア"モァｧ\nモォイモォォモアｲモイア`
+          }
         />
       </div>
       <form
@@ -160,8 +171,15 @@ const Presenter: React.FC<Props> = ({
       <div className={styles.validationError}>
         {isValidationError && (
           <>
-            ※<span className={styles.emphasis}>モアイ語以外</span>
-            は翻訳されず、そのまま反映されます
+            ※
+            <span className={styles.emphasis}>
+              {language === "ja"
+                ? "モアイ語以外"
+                : `モォィモアモァモォア"モァモアア"モァ`}
+            </span>
+            {language === "ja"
+              ? "は翻訳されず、そのまま反映されます"
+              : `モアイ モォイモォォモアｲモイアモアァモィｨモイァ"、 モォァモォｧモアィモアィ モアイモォォモィモァモアァモィｨモアィモイァ`}
           </>
         )}
       </div>
