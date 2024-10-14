@@ -12,10 +12,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
 
   > .title {
     text-align: center;
+    line-height: 1;
     font-size: $font-size-header;
+
+    &.Small {
+      font-size: $font-size-input;
+    }
   }
 
   > .image {

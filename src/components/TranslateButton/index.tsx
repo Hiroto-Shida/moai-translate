@@ -2,6 +2,8 @@ import clsx from "clsx";
 import styles from "./index.module.scss";
 import ArrowDownImage from "@/../public/arrowDown.svg";
 import ArrowUpImage from "@/../public/arrowUp.svg";
+import { useMemo } from "react";
+import React from "react";
 
 type Props = {
   form: string;
@@ -18,6 +20,16 @@ const TranslateButton: React.FC<Props> = ({
   direction,
   text,
 }) => {
+  const styledText = useMemo(() => {
+    // textの改行コードをbrタグに変換
+    return text.split("\n").map((t, index) => (
+      <React.Fragment key={index}>
+        {index !== 0 && <br />}
+        {t}
+      </React.Fragment>
+    ));
+  }, [text]);
+
   return (
     <button
       type="submit"
@@ -34,7 +46,7 @@ const TranslateButton: React.FC<Props> = ({
       ) : (
         <ArrowUpImage className={clsx(styles.arrow, styles.Up)} />
       )}
-      <p className={styles.text}>{text}</p>
+      <p className={styles.text}>{styledText}</p>
     </button>
   );
 };
