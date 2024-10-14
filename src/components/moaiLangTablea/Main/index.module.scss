@@ -1,0 +1,73 @@
+@use "@/styles/variables.module.scss" as *;
+
+.moaiLangTableWrapper {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  // align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 722px;
+
+  > .title {
+    // background-color: aquamarine;
+    font-size: $font-size-title;
+    font-weight: bold;
+  }
+}
+
+.tableDisplayWrapper {
+  // background-color: aqua;
+  overflow-x: scroll;
+  // padding: 10px;
+  display: flex;
+  justify-content: center;
+
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $color-black;
+    border-radius: 10px;
+  }
+}
+
+.tableWrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  border: 1px solid $color-black;
+}
+
+.columnWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.otherCharWrapper {
+  > .title {
+    font-size: $font-size-base;
+    font-weight: bold;
+  }
+
+  > .table {
+    border-spacing: 20px 0;
+  }
+
+  > .table > tbody > tr {
+    position: relative;
+  }
+
+  > .table > tbody > tr::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 7px;
+    height: 7px;
+    background-color: $color-black;
+    border-radius: 5px;
+  }
+}

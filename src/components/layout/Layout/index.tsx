@@ -10,7 +10,19 @@ export const Layout = ({ children }: Props) => {
   return (
     <>
       <Header height={headerHeight} />
-      <div style={{ marginTop: `${headerHeight + 30}px` }}>{children}</div>
+      <div
+        style={{
+          marginTop: `${headerHeight + 30}px`,
+          marginBottom: "100px",
+          padding: "0 20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {children}
+      </div>
     </>
   );
 };

@@ -10,7 +10,7 @@ const mPlusRounded1c = M_PLUS_Rounded_1c({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={mPlusRounded1c.className}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </main>
   );
 }

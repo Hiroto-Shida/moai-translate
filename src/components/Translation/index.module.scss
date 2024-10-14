@@ -3,7 +3,6 @@
 .bodyWrapper {
   width: 100%;
   max-width: 544px;
-  padding: 10px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -52,6 +51,14 @@
     &::placeholder {
       color: $color-gray;
     }
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-black;
+      border-radius: 10px;
+    }
   }
 
   > .counter {
@@ -82,7 +89,8 @@
   }
 
   > .textarea::selection {
-    background-color: rgba($color: $color-bg-gray, $alpha: 0.5);
+    // TODO: 他箇所も選択時の色を合わせる
+    background-color: rgba($color: $color-gray, $alpha: 0.5);
   }
 }
 
