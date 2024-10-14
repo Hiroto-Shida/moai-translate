@@ -4,19 +4,8 @@ export const config = {
   runtime: "edge",
 };
 
-// const loadLocalImage = async (path: string) => {
-//   const fs = require("fs").promises;
-//   const data = await fs.readFile(path);
-//   return data;
-// };
-
 export default async function handler() {
-  // NOTE: テキストをパラメータで指定することで動的な文章の表示が行える
-  // const { searchParams } = new URL(req.url);
-  // const text = searchParams.get("text");
-  // const imagePath = await loadLocalImage(`${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp_background.jpg`);
-
-  const backgroundUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/ogp_background.jpg`;
+  const backgroundUrl = `${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp_background.jpg`;
 
   return new ImageResponse(
     (
