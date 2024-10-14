@@ -32,11 +32,12 @@
   }
 
   > .arrow > path {
-    stroke: $color-theme-black;
+    stroke: $color-black;
   }
 
   > .text {
-    background-color: $color-theme-white;
+    font-size: $font-size-base;
+    background-color: $color-white;
     z-index: 2;
   }
 }
