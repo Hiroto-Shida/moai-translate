@@ -27,7 +27,7 @@ const Home: React.FC = () => {
     },
   });
 
-  const { setValue } = methods;
+  const { setValue, trigger } = methods;
 
   const [hiragana, setHiragana] = useState<string>("");
 
@@ -47,6 +47,7 @@ const Home: React.FC = () => {
     ) as HTMLTextAreaElement;
     if (textMoaiElement) textMoaiElement.value = textMoai;
     handleChangeMoaiLang(textMoai);
+    trigger("textMoai");
   };
 
   // モアイ語を日本語に変換する
@@ -66,6 +67,7 @@ const Home: React.FC = () => {
     });
 
     setValue("textJp", textJp);
+    trigger("textJp");
   };
 
   const [dividedMoalLang, setDividedMoalLang] = useState<string[]>([]);
