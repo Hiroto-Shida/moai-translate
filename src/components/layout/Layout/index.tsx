@@ -26,6 +26,7 @@ export const Layout = ({ children }: Props) => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          gap: "20px",
         }}
       >
         {children}

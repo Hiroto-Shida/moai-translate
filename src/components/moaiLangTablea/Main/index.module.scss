@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  max-width: 722px;
+  max-width: $content-max-width;
 
   > .title {
     font-size: $font-size-title;

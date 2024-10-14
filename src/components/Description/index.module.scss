@@ -1,0 +1,6 @@
+@use "@/styles/variables.module.scss" as *;
+
+.descriptionWrapper {
+  width: 100%;
+  max-width: $content-max-width;
+}

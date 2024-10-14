@@ -171,8 +171,15 @@ const Presenter: React.FC<Props> = ({
       <div className={styles.validationError}>
         {isValidationError && (
           <>
-            ※<span className={styles.emphasis}>モアイ語以外</span>
-            は翻訳されず、そのまま反映されます
+            ※
+            <span className={styles.emphasis}>
+              {language === "ja"
+                ? "モアイ語以外"
+                : `モォィモアモァモォア"モァモアア"モァ`}
+            </span>
+            {language === "ja"
+              ? "は翻訳されず、そのまま反映されます"
+              : `モアイ モォイモォォモアｲモイアモアァモィｨモイァ"、 モォァモォｧモアィモアィ モアイモォォモィモァモアァモィｨモアィモイァ`}
           </>
         )}
       </div>
