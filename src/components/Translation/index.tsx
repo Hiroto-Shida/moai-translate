@@ -36,6 +36,8 @@ const Translation: React.FC = () => {
     if (!textJp) return;
 
     const convertedText = await convertToHiragana(textJp);
+    if (!convertedText) return;
+
     setHiragana(convertedText);
 
     const textMoai = convertedText
