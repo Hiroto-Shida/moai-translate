@@ -1,11 +1,10 @@
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { FormType } from ".";
 import styles from "./index.module.scss";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import React from "react";
+import TranslateButton from "../TranslateButton";
 
 type Props = {
   translateJpToMoai: SubmitHandler<FormType>;
@@ -111,27 +110,21 @@ const Presenter: React.FC<Props> = ({
         </div>
       </form>
       <p className={styles.hiragana}>{hiragana}</p>
-      <div className={styles.buttonWrapper}>
-        <button
-          type="submit"
+      <div className={styles.buttonsWrapper}>
+        <TranslateButton
           form="translateToMoai"
-          className={styles.button}
           disabled={formState.isSubmitting || !!formState.errors.textJp}
           onClick={() => setValue("textMoai", "")}
-        >
-          <ArrowDownwardIcon />
-          モアイ語に翻訳
-        </button>
-        <button
-          type="submit"
+          direction="down"
+          text="モアイ語に翻訳"
+        />
+        <TranslateButton
           form="translateToJp"
-          className={styles.button}
           disabled={formState.isSubmitting || !!formState.errors.textMoai}
           onClick={() => setValue("textJp", "")}
-        >
-          <ArrowUpwardIcon />
-          日本語に翻訳
-        </button>
+          direction="up"
+          text="日本語に翻訳"
+        />
       </div>
       <form
         id="translateToJp"

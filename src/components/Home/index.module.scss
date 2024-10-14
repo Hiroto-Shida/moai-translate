@@ -20,16 +20,12 @@
   }
 }
 
-.buttonWrapper {
+.buttonsWrapper {
   width: 100%;
-  margin: 10px auto;
+  margin: 50px auto;
   display: flex;
   justify-content: center;
-  gap: 10px;
-
-  > .button {
-    padding: auto;
-  }
+  gap: 30px;
 }
 
 .formElement {

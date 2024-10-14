@@ -1,0 +1,42 @@
+@use "@/styles/variables.module.scss" as *;
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: none;
+  transition: transform 0.1s ease-in-out;
+
+  &.Disabled {
+    opacity: 0.5;
+  }
+
+  &.Active:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+
+  > .arrow {
+    position: absolute;
+    z-index: 1;
+    width: 60px;
+
+    &.Up {
+      margin-bottom: 5px;
+    }
+
+    &.Down {
+      margin-top: 5px;
+    }
+  }
+
+  > .arrow > path {
+    stroke: $color-theme-black;
+  }
+
+  > .text {
+    background-color: $color-theme-white;
+    z-index: 2;
+  }
+}
