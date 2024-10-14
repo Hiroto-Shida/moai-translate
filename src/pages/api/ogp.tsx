@@ -5,8 +5,9 @@ export const config = {
 };
 
 export default async function handler() {
-  const backgroundUrl = `${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp_background.jpg`;
+  const backgroundUrl = `${process.env.NEXT_PUBLIC_VERCEL_URL}/ogp.jpg`;
 
+  // TODO: 動的なOGP画像を生成する
   return new ImageResponse(
     (
       <div
@@ -33,17 +34,6 @@ export default async function handler() {
             zIndex: -1,
           }}
         />
-        {/* テキスト */}
-        <div
-          style={{
-            color: "white",
-            fontSize: "48px",
-            fontWeight: "bold",
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          モアイ翻訳
-        </div>
       </div>
     ),
     {
