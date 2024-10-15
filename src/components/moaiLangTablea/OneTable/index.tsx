@@ -7,18 +7,20 @@ type Props = {
 
 const OneTable: React.FC<Props> = ({ jp }) => {
   return jp ? (
-    <table className={styles.tableElement}>
-      <tbody>
-        <tr className={styles.trElement}>
-          <th>{jp}</th>
-        </tr>
-        <tr>
-          <td>{MOAI_LANG[jp] ?? ""}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div className={styles.blockWrapper}>
+      <table className={styles.tableElement}>
+        <tbody>
+          <tr className={styles.trElement}>
+            <th>{jp}</th>
+          </tr>
+          <tr>
+            <td>{MOAI_LANG[jp] ?? ""}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   ) : (
-    <div className={styles.none} />
+    <div className={styles.blockWrapper} />
   );
 };
 
