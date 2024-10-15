@@ -1,4 +1,4 @@
-import MoaiLangTable from "@/components/moaiLangTablea/Main";
+import MoaiLangTable from "@/components/moaiLangTable/Main";
 import Translation from "@/components/Translation";
 import { Layout } from "@/components/layout/Layout";
 import { InferGetServerSidePropsType, NextPage } from "next";

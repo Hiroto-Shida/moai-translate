@@ -1,19 +1,16 @@
 @use "@/styles/variables.module.scss" as *;
 
-.none {
+.blockWrapper {
   border: 1px solid $color-black;
   height: 54px;
   width: 70px;
-  box-sizing: content-box;
 }
 
 .tableElement {
-  border: 1px solid $color-black;
-  height: 54px;
-  width: 70px;
+  height: 100%;
+  width: 100%;
   font-size: $font-size-base;
   text-align: center;
-  box-sizing: content-box;
 }
 
 .trElement {
