@@ -17,8 +17,8 @@
 
 .tableDisplayWrapper {
   overflow-x: scroll;
+  overflow-y: hidden;
   display: flex;
-  justify-content: center;
 
   &::-webkit-scrollbar {
     height: 10px;
@@ -48,22 +48,6 @@
 
   > .table {
     border-spacing: 20px 0;
-  }
-
-  > .table > tbody > tr {
-    position: relative;
-  }
-
-  > .table > tbody > tr::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    width: 7px;
-    height: 7px;
-    background-color: $color-black;
-    border-radius: 5px;
+    line-height: 1.5;
   }
 }
