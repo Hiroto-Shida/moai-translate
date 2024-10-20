@@ -18,7 +18,11 @@ const schema = yup.object({
   textMoai: yup.string().max(2000, "※2000文字以内で入力してください"),
 });
 
-const Translation: React.FC = () => {
+type Props = {
+  apiKey: string;
+};
+
+const Translation: React.FC<Props> = ({ apiKey }) => {
   const methods = useForm<FormType>({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -36,7 +40,7 @@ const Translation: React.FC = () => {
   const translateJpToMoai: SubmitHandler<FormType> = async ({ textJp }) => {
     if (!textJp) return;
 
-    const convertedText = await convertToHiragana(textJp);
+    const convertedText = await convertToHiragana(textJp, apiKey);
     if (!convertedText) return;
 
     setHiragana(convertedText);

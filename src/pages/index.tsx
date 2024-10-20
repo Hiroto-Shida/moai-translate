@@ -6,12 +6,12 @@ import Description from "@/components/Description";
 
 const Page: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({}) => {
+> = ({ apiKey }) => {
   return (
     <>
       <Layout>
         <Description />
-        <Translation />
+        <Translation apiKey={apiKey} />
         <MoaiLangTable />
       </Layout>
     </>
@@ -20,7 +20,9 @@ const Page: NextPage<
 
 export const getServerSideProps = async () => {
   return {
-    props: {},
+    props: {
+      apiKey: process.env.GOO_LAB_API_KEY || "",
+    },
   };
 };
 
