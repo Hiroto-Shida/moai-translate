@@ -18,19 +18,23 @@ export default async function handler(
     res.status(429).json({ error: "Rate limit exceeded" });
   }
 
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     res.status(405).json({ message: "Method Not Allowed" });
     return;
   }
 
-  const moaiQuery = req.query["moai"];
+  const { moaiLang, apiKey } = req.body;
 
-  if (typeof moaiQuery !== "string") {
+  if (
+    !moaiLang ||
+    typeof moaiLang !== "string" ||
+    apiKey !== process.env.MOAI_LANG_API_KEY
+  ) {
     res.status(400).json({ message: "Bad Request" });
     return;
   }
 
-  const textJp = await translateMoaiToHira(moaiQuery);
+  const textJp = await translateMoaiToHira(moaiLang);
 
   res.status(200).json({ jp: textJp });
 }
