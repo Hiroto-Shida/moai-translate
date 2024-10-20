@@ -4,6 +4,9 @@ import {
 } from "@/types/ApiResponseType";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
+/**
+ * 漢字/カタカナ/英語からひらがなへの変換処理
+ */
 export const convertToHiragana = async (
   text: string
 ): Promise<string | null> => {

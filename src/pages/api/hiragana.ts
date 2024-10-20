@@ -12,7 +12,10 @@ const client: AxiosInstance = axios.create({
   timeout: 20000,
 });
 
-const postKanji = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const apiToken = process.env.GOO_LAB_API_KEY || "";
   const { text } = req.body;
 
@@ -31,6 +34,4 @@ const postKanji = async (req: NextApiRequest, res: NextApiResponse) => {
     .catch((error: AxiosError<ApiErrorResponseType>) => {
       res.status(500).json(error?.response?.data);
     });
-};
-
-export default postKanji;
+}

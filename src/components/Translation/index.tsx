@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { convertToHiragana } from "@/servers/convertToHiragana";
 import { ALL_MOAI_LANG_REGEXP, MOAI_LANG_REGEXP } from "@/constants/regexp";
+import translateMoaiToHira from "@/utils/translateMoaiToHira";
 
 export type FormType = {
   textJp?: string;
@@ -57,16 +58,7 @@ const Translation: React.FC = () => {
     if (!textMoai) return;
     setHiragana("");
 
-    const pattern = Object.values(MOAI_LANG).reverse().join("|");
-    const regexp = new RegExp(pattern, "g");
-    const textJp = textMoai.replace(regexp, (char) => {
-      const matchedEntries = Object.entries(MOAI_LANG).find(
-        // matchedEntries[0]でkeyを使用しているため、buildエラー対策
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([key, value]) => value === char
-      );
-      return matchedEntries ? matchedEntries[0] : char;
-    });
+    const textJp = await translateMoaiToHira(textMoai);
 
     setValue("textJp", textJp);
     trigger("textJp");
