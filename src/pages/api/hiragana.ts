@@ -12,15 +12,29 @@ const client: AxiosInstance = axios.create({
   timeout: 20000,
 });
 
-const postKanji = async (req: NextApiRequest, res: NextApiResponse) => {
-  const apiToken = process.env.GOO_LAB_API_KEY || "";
-  const { text } = req.body;
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { text, apiKey } = req.body;
+
+  if (req.method !== "POST") {
+    res
+      .status(405)
+      .json({ error: { code: 405, message: "Method Not Allowed" } });
+    return;
+  }
+
+  if (!text || apiKey !== process.env.GOO_LAB_API_KEY) {
+    res.status(400).json({ error: { code: 400, message: "Bad Request" } });
+    return;
+  }
 
   client
     .post(
-      `https://labs.goo.ne.jp/api/hiragana?app_id=${apiToken}`,
+      `https://labs.goo.ne.jp/api/hiragana?app_id=${apiKey}`,
       JSON.stringify({
-        app_id: apiToken,
+        app_id: apiKey,
         sentence: text,
         output_type: "hiragana",
       })
@@ -31,6 +45,4 @@ const postKanji = async (req: NextApiRequest, res: NextApiResponse) => {
     .catch((error: AxiosError<ApiErrorResponseType>) => {
       res.status(500).json(error?.response?.data);
     });
-};
-
-export default postKanji;
+}
