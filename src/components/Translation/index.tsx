@@ -1,5 +1,4 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { MOAI_LANG } from "../../constants/moaiLang";
 import Presenter from "./Presenter";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +6,7 @@ import { useState } from "react";
 import { convertToHiragana } from "@/servers/convertToHiragana";
 import { ALL_MOAI_LANG_REGEXP, MOAI_LANG_REGEXP } from "@/constants/regexp";
 import translateMoaiToHira from "@/utils/translateMoaiToHira";
+import translateHiraToMoai from "@/utils/translateHiraToMoai";
 
 export type FormType = {
   textJp?: string;
@@ -45,10 +45,7 @@ const Translation: React.FC<Props> = ({ apiKey }) => {
 
     setHiragana(convertedText);
 
-    const textMoai = convertedText
-      .split("")
-      .map((char) => MOAI_LANG[char] || char)
-      .join("");
+    const textMoai = await translateHiraToMoai(convertedText);
     const textMoaiElement = document.getElementById(
       "textMoai"
     ) as HTMLTextAreaElement;
