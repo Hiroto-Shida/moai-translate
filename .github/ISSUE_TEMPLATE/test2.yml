@@ -1,0 +1,16 @@
+name: 🐛 test2
+description: bb
+title: 🐛 <bug title>
+labels: [bug]
+
+body:
+  - type: textarea
+    attributes:
+      label: 概要
+      description: 発生したバグ内容を簡潔に記載してください！
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "111"
