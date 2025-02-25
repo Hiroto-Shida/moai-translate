@@ -29,8 +29,7 @@ const Presenter: React.FC<Props> = ({ height, onClickSwitch }) => {
           "モアイ翻訳"
         ) : (
           <>
-            <p>モォィモアモァ</p>
-            <p>モォイモォォモアｲモイア</p>
+            <p>モィアﾓｧイモィアｲイモィアｲオモﾓｲﾓｨﾓｨｨモｱｲィィ</p>
           </>
         )}
       </h1>
