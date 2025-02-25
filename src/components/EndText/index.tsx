@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { LanguagesContext } from "../layout/Layout";
 import styles from "./index.module.scss";
 
+// サービス終了文章コンポーネント
 const EndText: React.FC = () => {
   const language = useContext(LanguagesContext);
 
