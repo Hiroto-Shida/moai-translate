@@ -1,29 +1,13 @@
-import MoaiLangTable from "@/components/moaiLangTable/Main";
-import Translation from "@/components/Translation";
+import EndText from "@/components/EndText";
 import { Layout } from "@/components/layout/Layout";
-import { InferGetServerSidePropsType, NextPage } from "next";
-import Description from "@/components/Description";
+import { NextPage } from "next";
 
-const Page: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ apiKey }) => {
+const Page: NextPage = () => {
   return (
-    <>
-      <Layout>
-        <Description />
-        <Translation apiKey={apiKey} />
-        <MoaiLangTable />
-      </Layout>
-    </>
+    <Layout>
+      <EndText />
+    </Layout>
   );
-};
-
-export const getServerSideProps = async () => {
-  return {
-    props: {
-      apiKey: process.env.GOO_LAB_API_KEY || "",
-    },
-  };
 };
 
 export default Page;
